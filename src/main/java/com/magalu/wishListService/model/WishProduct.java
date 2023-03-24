@@ -19,11 +19,9 @@ public class WishProduct {
     @Field(name = "id")
     private String id;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
     @Field(name = "created_date")
     private LocalDate createdDate;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
     @Field(name = "updated_date")
     private LocalDate updatedDate;
 

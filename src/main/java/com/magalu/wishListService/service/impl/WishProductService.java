@@ -44,7 +44,7 @@ public class WishProductService implements IWishProductService {
 
     @Override
     public WishProduct add(String clientId, Product product) {
-        List<WishProduct> wishlist= get(clientId);
+        List<WishProduct> wishlist= this.get(clientId);
         if(wishlist.size()>=20)
             throw new WishProductException("WishList do cliente está lotada!");
 

@@ -9,4 +9,7 @@ public class WishProductException extends RuntimeException {
     public WishProductException(String message){
         super(message);
     }
+    public WishProductException(){
+        super();
+    }
 }

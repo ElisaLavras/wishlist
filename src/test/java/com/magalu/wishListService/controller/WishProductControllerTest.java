@@ -1,5 +1,6 @@
 package com.magalu.wishListService.controller;
 
+import com.magalu.wishListService.model.Product;
 import com.magalu.wishListService.model.WishProduct;
 import com.magalu.wishListService.service.impl.WishProductService;
 import org.junit.Assert;
@@ -21,6 +22,8 @@ public class WishProductControllerTest {
     private String productId = "ProductId";
 
     private WishProduct wishProduct;
+    private Product product;
+
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
@@ -31,32 +34,38 @@ public class WishProductControllerTest {
                 .updatedDate(LocalDate.now())
                 .clientId("ClientId")
                 .build();
+        product = Product.builder().id(productId).name("Product name").build();
     }
     @Test
     public void getTest(){
         List<WishProduct> list = Collections.singletonList(wishProduct);
         Mockito.when(service.get(wishProduct.getClientId())).thenReturn(list);
-
-        controller = new WishProductController(service);
-
+        controller = getController();
         Assert.assertEquals(controller.get(wishProduct.getClientId()).getBody(),list);
     }
 
     @Test
     public void getByProductId(){
         Mockito.when(service.get(wishProduct.getClientId(), wishProduct.getProductId())).thenReturn(wishProduct);
-
-        controller = new WishProductController(service);
-
+        controller = getController();
         Assert.assertEquals(controller.get(wishProduct.getClientId(), wishProduct.getProductId()).getBody(),wishProduct);
     }
 
     @Test
-    public void removeProductFromWishList(){
+    public void removeProductFromWishListTest(){
         Mockito.when(service.remove(wishProduct.getClientId(), wishProduct.getProductId())).thenReturn(true);
+        controller = getController();
+        Assert.assertEquals(Boolean.TRUE, controller.remove(wishProduct.getClientId(), wishProduct.getProductId()).getBody());
+    }
 
-        controller = new WishProductController(service);
+    @Test
+    public void addProductTest(){
+        Mockito.when(service.add(wishProduct.getClientId(), product)).thenReturn(wishProduct);
+        controller = getController();
+        Assert.assertEquals(controller.add(wishProduct.getClientId(), product).getBody(),wishProduct);
+    }
 
-        Assert.assertTrue(controller.remove(wishProduct.getClientId(), wishProduct.getProductId()).getBody());
+    private WishProductController getController(){
+        return new WishProductController((service));
     }
 }
